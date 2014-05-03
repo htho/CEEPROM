@@ -1,0 +1,43 @@
+#######################################
+# Syntax Coloring Map For CEEPROM
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+CEEPROM	KEYWORD1
+CEEPROMPrint	KEYWORD1
+CEEPROMFake KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+add	KEYWORD2
+remove	KEYWORD2
+get	KEYWORD2
+
+createChunk	KEYWORD2
+chunkLength	KEYWORD2
+chunkData	KEYWORD2
+
+chunkCount	KEYWORD2
+format	KEYWORD2
+
+printChunk	KEYWORD2
+printStorageDump	KEYWORD2
+printEEPROMDump	KEYWORD2
+
+fake_eeprom	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+DBG	LITERAL1
+DBGL	LITERAL1
+EEPROM_SIZE	LITERAL1
+EEPROM_OFFSET	LITERAL1
+WRITE	LITERAL1
+READ	LITERAL1
+UPDATE	LITERAL1
