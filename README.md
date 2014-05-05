@@ -28,7 +28,7 @@ delete chunk;
 ```
 
 ###Helper: Getting Length and Data
-`uint8_t CEEPROM.chunkLength(uint8_t* chunk)` returns the length of the given chunk and `uint8_t* CEEPROM.chunkData(uint8_t* chunk)` returns a pointer to the data.
+`uint8_t CEEPROM.chunkLength(uint8_t* chunk)` returns the length of the given chunk and `uint8_t* CEEPROM.chunkData(uint8_t* chunk)` returns a pointer to the data (no new memory is allocated).
 
 ```cpp
 uint8_t chunk[] = {2, 42, 43}; //length=2, values={42, 43}
@@ -49,7 +49,7 @@ uint16_t pos = CEEPROM.add(chunk);
 ```
 
 ###Reading Chunks
-`uint8_t* CEEPROM.get(uint16_t position)` Retrieves a Chunk from Storage. It allocates a memory for the new array and returns a Pointer, so the Programmer is responsible for deleting the array when it is not needed anymore.
+`uint8_t* CEEPROM.get(uint16_t position)` Retrieves a Chunk from Storage. It allocates memory for the new array and returns a Pointer, so the Programmer is responsible for deleting the array when it is not needed anymore.
 
 ```cpp
 uint8_t* chunk = CEEPROM.get(0); //Retrieves the first chunk in storage.
@@ -77,7 +77,7 @@ for(int i = 0; i < CEEPROM.chunkCount(); i++){
 ```
 
 ###Initialization
-`void format()` deletes all chunks. This is needed to initailize the EEPROM for first usage.
+`void format()` deletes all chunks. This is needed to initailize the EEPROM for first usage. So its not called at the beginning of each sketch. Instead its called once, in order to initialize the board for using CEEPROM in the future.
 
 ## #define Macros
 Some `#define` macros can be used to adjust the functionality. For basic usage, none of them are needed.
@@ -90,6 +90,8 @@ Some `#define` macros can be used to adjust the functionality. For basic usage, 
 //Defines the size of the EEPROM, if not defined, 512 bytes of EEPROM are assumed.
 #define EEPROM_SIZE 1024
 ```
+
+These Macros have to be defined before including `CEEPROM.h`.
 
 ##Helpers
 
