@@ -1,7 +1,7 @@
 /*
-	fake_eeprom
+	ceeprom_fake_eeprom
 
-	Demonstrates Reading, Writing and Removing Chunks from faked EEPROM.
+	Demonstrates Reading, Writing and Removing Arrays from faked EEPROM.
 	Faking the EEPROM means that instead of using the EEPROM, an array
 	is used. This nice for debugging without wearing the EEPROM Cells.
 	Of course data is not stored persistently as it would if the EEPROM
@@ -22,14 +22,21 @@
 #define EEPROM_OFFSET 32
 //In this case the fist 32 Adresses won't be used.
 
-//Fakes the EEPROM. Not including this file means that the actual EEPROM will be used.
-#include <RWH_Fake.h> 
+//Defines that EEPROM should be faked.
+#define FAKE_EEPROM
+
+//Defines that CEEPROMs printing functions should be available (DBG(STR) needs to be definde too!)
+#define CEEPROM_PRINT
+//Defines that CHUNKS printing functions should be available (DBG(STR) needs to be definde too!)
+#define CHUNKS_PRINT
+
+//The Printing functions need this Macro
+#define DBG(STR) Serial.print(STR);
 
 //The CEEPROM Functionality
 #include <CEEPROM.h> 
-
-//CEEPROMPrint provides functions to print chunks and the memory.
-#include <CEEPROMPrint.h>
+//The CHUNK Functionality
+#include <CHUNKS.h> 
 
 void setup()
 {
@@ -41,7 +48,6 @@ void setup()
   uint8_t chunk2[] = {1, 21}; //Chunk Length: 1, Value: {21}
   
   //This is for initializing the storage. This function will remove any chunks stored.
-  //Remove this when you actually want to store data in EEPROM.
   CEEPROM.format();
   
   Serial.print("Currently these ");
@@ -49,28 +55,36 @@ void setup()
   Serial.println(" Chunks are stored:");
   for(int i = 0; i < CEEPROM.chunkCount(); i++){
     uint8_t* chunk = CEEPROM.get(i);
-    CEEPROMPrint.printChunk(chunk);
+    CHUNKS.printChunk(chunk);
     delete chunk;
   }
   
   Serial.println("This is how the EEPROM looks like:");
-  CEEPROMPrint.printEEPROMDump();
+  CEEPROM.printEEPROMDump();
   
+  //###############
+  //---ATTENTION---
+  //###############
+  //Starting the Arduino with this sketch over and over again results in
+  //adding these three chunks over and over again.
+  //(If the storage is not formated before.)
   Serial.println("\nAdding some Chunks:");
   CEEPROM.add(chunk0);
   CEEPROM.add(chunk1);
   CEEPROM.add(chunk2);
+  //###############
+
 
   Serial.print("Now these ");
   Serial.print(CEEPROM.chunkCount());
   Serial.println(" Chunks are stored:");
   for(int i = 0; i < CEEPROM.chunkCount(); i++){
     uint8_t* chunk = CEEPROM.get(i);
-    CEEPROMPrint.printChunk(chunk);
+    CHUNKS.printChunk(chunk);
     delete chunk;
   }
   Serial.println("This is how the EEPROM looks like:");
-  CEEPROMPrint.printEEPROMDump();
+  CEEPROM.printEEPROMDump();
  
   Serial.println("\nRemoving the Chunk at Position 0:");
   CEEPROM.remove(0);
@@ -80,13 +94,12 @@ void setup()
   Serial.println(" Chunks are stored:");
   for(int i = 0; i < CEEPROM.chunkCount(); i++){
     uint8_t* chunk = CEEPROM.get(i);
-    CEEPROMPrint.printChunk(chunk);
+    CHUNKS.printChunk(chunk);
     delete chunk;
   }
   Serial.println("This is how the EEPROM looks like:");
-  CEEPROMPrint.printEEPROMDump();
+  CEEPROM.printEEPROMDump();
 }
-
 void loop()
 {
   // Nothing to do during loop

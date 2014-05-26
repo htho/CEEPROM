@@ -22,11 +22,18 @@
 //Defines the size of the EEPROM, if not defined, 512 bytes of EEPROM are assumed.
 #define EEPROM_SIZE 1024
 
+//Defines that CEEPROMs printing functions should be available (DBG(STR) needs to be definde too!)
+#define CEEPROM_PRINT
+//Defines that CHUNKS printing functions should be available (DBG(STR) needs to be definde too!)
+#define CHUNKS_PRINT
+
+//The Printing functions need this Macro
+#define DBG(STR) Serial.print(STR);
+
 //The CEEPROM Functionality
 #include <CEEPROM.h> 
-
-//CEEPROMPrint provides functions to print chunks and the memory.
-#include <CEEPROMPrint.h>
+//The CHUNKS Functionality
+#include <CHUNKS.h> 
 
 void setup()
 {
@@ -51,12 +58,12 @@ void setup()
   Serial.println(" Chunks are stored:");
   for(int i = 0; i < CEEPROM.chunkCount(); i++){
     uint8_t* chunk = CEEPROM.get(i);
-    CEEPROMPrint.printChunk(chunk);
+    CHUNKS.printChunk(chunk);
     delete chunk;
   }
   
   Serial.println("This is how the EEPROM looks like:");
-  CEEPROMPrint.printEEPROMDump();
+  CEEPROM.printEEPROMDump();
   
   //###############
   //---ATTENTION---
@@ -76,11 +83,11 @@ void setup()
   Serial.println(" Chunks are stored:");
   for(int i = 0; i < CEEPROM.chunkCount(); i++){
     uint8_t* chunk = CEEPROM.get(i);
-    CEEPROMPrint.printChunk(chunk);
+    CHUNKS.printChunk(chunk);
     delete chunk;
   }
   Serial.println("This is how the EEPROM looks like:");
-  CEEPROMPrint.printEEPROMDump();
+  CEEPROM.printEEPROMDump();
  
   Serial.println("\nRemoving the Chunk at Position 0:");
   CEEPROM.remove(0);
@@ -90,11 +97,11 @@ void setup()
   Serial.println(" Chunks are stored:");
   for(int i = 0; i < CEEPROM.chunkCount(); i++){
     uint8_t* chunk = CEEPROM.get(i);
-    CEEPROMPrint.printChunk(chunk);
+    CHUNKS.printChunk(chunk);
     delete chunk;
   }
   Serial.println("This is how the EEPROM looks like:");
-  CEEPROMPrint.printEEPROMDump();
+  CEEPROM.printEEPROMDump();
 }
 
 void loop()
